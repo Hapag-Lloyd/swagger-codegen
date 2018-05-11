@@ -57,16 +57,25 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 		outputFolder = "output"; // CLI:
 		withXml = true;
 
-		// Custom properties... 
-		// TODO artifactId = artifactId; // CLI: artifactId
+		// Custom properties...
+		// TODO make these properties customizable for Maven integration
+		// artifactId = artifactId; // CLI: artifactId
 		apiPackage = "com.hlag.fis.basis.core.example.api"; // CLI: apiPackage
 		modelPackage = "com.hlag.fis.basis.core.example.model"; // CLI: modelPackage
 		testPackage = "com.hlag.fis.basis.core.example.test";
 		title = "Generated Server"; // CLI: title (oben aber entfernt)
-		
-		// TODO generate validation annotations
+
+		// TODO change bean generation to XML style according to FIS3 guideline
 	}
 
+	/**
+	 * @see io.swagger.codegen.DefaultCodegen#addOperationToGroup(java.lang.String,
+	 *      java.lang.String, io.swagger.models.Operation, io.swagger.codegen.CodegenOperation,
+	 *      java.util.Map)
+	 * @see io.swagger.codegen.languages.JavaJerseyServerCodegen#addOperationToGroup(java.lang.String,
+	 *      java.lang.String, io.swagger.models.Operation, io.swagger.codegen.CodegenOperation,
+	 *      java.util.Map)
+	 */
 	@Override
 	public void addOperationToGroup(
 			String tag,
@@ -102,6 +111,7 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 
 	@Override
 	public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
+		// remove notes if they are empty
 		@SuppressWarnings("unchecked")
 		Map<String, Object> operations = (Map<String, Object>) objs.get("operations");
 		if (operations != null) {
@@ -114,9 +124,16 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 			}
 		}
 
+		// do things from super class
 		return super.postProcessOperations(objs);
 	}
 
+	/**
+	 * Remove a CLI option from the list of available options
+	 * 
+	 * @param cliOptions the available CLI options
+	 * @param optionToRemove the name of the CLI option to remove
+	 */
 	private static void removeCliOption(Iterable<CliOption> cliOptions, String optionToRemove) {
 		Iterator<CliOption> it = cliOptions.iterator();
 		while (it.hasNext()) {
@@ -125,5 +142,4 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 			}
 		}
 	}
-
 }
