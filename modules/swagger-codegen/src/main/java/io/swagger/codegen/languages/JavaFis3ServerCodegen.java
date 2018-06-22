@@ -61,7 +61,6 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		withXml = true;
 
 		// Custom properties...
-		// TODO make these properties customizable for Maven integration
 		// artifactId = artifactId; // CLI: artifactId
 		apiPackage = "com.hlag.fis.basis.core.example.api"; // CLI: apiPackage
 		modelPackage = "com.hlag.fis.basis.core.example.model"; // CLI: modelPackage
