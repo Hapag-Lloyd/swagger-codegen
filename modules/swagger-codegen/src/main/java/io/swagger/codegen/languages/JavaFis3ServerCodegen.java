@@ -1,5 +1,8 @@
 package io.swagger.codegen.languages;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +15,7 @@ import io.swagger.codegen.CodegenOperation;
 import io.swagger.codegen.CodegenType;
 import io.swagger.models.Operation;
 
-public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* AbstractJavaCodegen */ {
+public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 	@Override
 	public CodegenType getTag() {
 		return CodegenType.SERVER;
@@ -31,7 +34,6 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 	public JavaFis3ServerCodegen() {
 		super();
 
-		// embeddedTemplateDir =
 		templateDir = embeddedTemplateDir = "JavaFis3";
 		library = "JavaFis3";
 
@@ -45,8 +47,9 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 		modelDocTemplateFiles.remove("model_doc.mustache");
 		apiDocTemplateFiles.remove("api_doc.mustache");
 
-		// add interfaces
-		//apiTemplateFiles.put("apiService.mustache", ".java");
+		// Default generation will create interface
+		// we will provide optional default implementation which will not be created if the corresponding file already exists.
+		// apiTemplateFiles.put("apiImplementation.mustache", ".java");
 
 		// Default values for FIS3
 		dateLibrary = "java8";
@@ -68,6 +71,21 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen/* Abst
 		// TODO change bean generation to XML style according to FIS3 guideline
 	}
 
+	@Override
+	public boolean shouldOverwrite(String filename) {
+		Path path = Paths.get(filename);
+		if ("model".equals(path.getParent().getFileName().toString()))
+			return !Files.exists(path);
+		else
+			// TODO filter implementation files so custom code will not be overwritten
+			return super.shouldOverwrite(filename);
+	}
+
+	@Override
+	public String apiFilename(String templateName, String tag) {
+		return super.apiFilename(templateName, tag);
+	}
+	
 	/**
 	 * @see io.swagger.codegen.DefaultCodegen#addOperationToGroup(java.lang.String,
 	 *      java.lang.String, io.swagger.models.Operation, io.swagger.codegen.CodegenOperation,
