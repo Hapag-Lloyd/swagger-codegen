@@ -9,9 +9,11 @@ import java.util.Objects;
 import java.io.Serializable;
 {{/serializableModel}}
 import javax.validation.constraints.*;
+import com.hlag.fis.buildingblock.annotation.CodeValidationType;
 
 {{#models}}
 {{#model}}
+@SuppressCodeValidations(CodeValidationType.BUILDING_BLOCK_USAGE)
 {{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>pojo}}{{/isEnum}}
 {{/model}}
 {{/models}}
