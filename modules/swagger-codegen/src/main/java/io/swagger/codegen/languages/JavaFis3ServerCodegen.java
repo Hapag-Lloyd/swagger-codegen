@@ -1,8 +1,5 @@
 package io.swagger.codegen.languages;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -11,8 +8,10 @@ import java.util.Map;
 import com.google.common.base.Strings;
 
 import io.swagger.codegen.CliOption;
+import io.swagger.codegen.CodegenModel;
 import io.swagger.codegen.CodegenOperation;
 import io.swagger.codegen.CodegenType;
+import io.swagger.models.Model;
 import io.swagger.models.Operation;
 
 public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
@@ -59,6 +58,8 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		typeMapping.put("date", "ZonedDateTime");
 		outputFolder = "output"; // CLI:
 		withXml = true;
+		
+		additionalProperties.remove("jackson");
 
 		// Custom properties...
 		// artifactId = artifactId; // CLI: artifactId
@@ -68,21 +69,6 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		title = "Generated Server"; // CLI: title (oben aber entfernt)
 
 		// TODO change bean generation to XML style according to FIS3 guideline
-	}
-
-	@Override
-	public boolean shouldOverwrite(String filename) {
-		Path path = Paths.get(filename);
-		if ("model".equals(path.getParent().getFileName().toString()))
-			return !Files.exists(path);
-		else
-			// TODO filter implementation files so custom code will not be overwritten
-			return super.shouldOverwrite(filename);
-	}
-
-	@Override
-	public String apiFilename(String templateName, String tag) {
-		return super.apiFilename(templateName, tag);
 	}
 	
 	/**
@@ -144,7 +130,15 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		// do things from super class
 		return super.postProcessOperations(objs);
 	}
-
+	
+	@Override
+	public CodegenModel fromModel(String name, Model model, Map<String, Model> allDefinitions) {
+		CodegenModel cm = super.fromModel(name, model, allDefinitions);
+		cm.parent="CompositeDomainObject";
+		cm.imports.add("com.hlag.fis.buildingblock.core.domain.CompositeDomainObject");
+		return cm;
+	}
+	
 	/**
 	 * Remove a CLI option from the list of available options
 	 * 
