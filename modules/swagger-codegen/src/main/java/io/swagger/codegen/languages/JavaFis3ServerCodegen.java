@@ -1,5 +1,6 @@
 package io.swagger.codegen.languages;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +16,8 @@ import io.swagger.models.Model;
 import io.swagger.models.Operation;
 
 public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
+	private static final String APPLICATION_SERVICE_ENDPOINT = "AppSvcEndp";
+
 	@Override
 	public CodegenType getTag() {
 		return CodegenType.SERVER;
@@ -58,19 +61,50 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		typeMapping.put("date", "ZonedDateTime");
 		outputFolder = "output"; // CLI:
 		withXml = true;
-		
+
+		// Things FIS3 does not use
 		additionalProperties.remove("jackson");
 
 		// Custom properties...
+		String project = "basis";
 		// artifactId = artifactId; // CLI: artifactId
-		apiPackage = "com.hlag.fis.basis.core.example.api"; // CLI: apiPackage
-		modelPackage = "com.hlag.fis.basis.core.example.model"; // CLI: modelPackage
-		testPackage = "com.hlag.fis.basis.core.example.test";
+		apiPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx"; // CLI: apiPackage
+		modelPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx.model"; // CLI: modelPackage
+		testPackage = "com.hlag.fis." + project + ".core.example.test";
 		title = "Generated Server"; // CLI: title (oben aber entfernt)
+
+		// fixed properties for code generation
+		sourceFolder = paths("src", "gen", "java");
 
 		// TODO change bean generation to XML style according to FIS3 guideline
 	}
-	
+
+	@Override
+	public boolean shouldOverwrite(String filename) {
+		return true; // TODO for testing
+		//		Path path = Paths.get(filename);
+		//		if ("model".equals(path.getParent().getFileName().toString()))
+		//			return !Files.exists(path);
+		//		else
+		//			// TODO filter implementation files so custom code will not be overwritten
+		//			return super.shouldOverwrite(filename);
+	}
+
+	@Override
+	public String apiFileFolder() {
+		return paths(outputFolder, sourceFolder, apiPackage().replace('.', File.separatorChar));
+	}
+
+	@Override
+	public String toApiName(final String name) {
+		String computed = name;
+		if (computed.length() == 0) {
+			computed = "Default";
+		}
+		computed = sanitizeName(computed);
+		return camelize(computed) + APPLICATION_SERVICE_ENDPOINT;
+	}
+
 	/**
 	 * @see io.swagger.codegen.DefaultCodegen#addOperationToGroup(java.lang.String,
 	 *      java.lang.String, io.swagger.models.Operation, io.swagger.codegen.CodegenOperation,
@@ -130,15 +164,24 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		// do things from super class
 		return super.postProcessOperations(objs);
 	}
-	
+
 	@Override
 	public CodegenModel fromModel(String name, Model model, Map<String, Model> allDefinitions) {
 		CodegenModel cm = super.fromModel(name, model, allDefinitions);
-		cm.parent="CompositeDomainObject";
+		cm.parent = "CompositeDomainObject";
 		cm.imports.add("com.hlag.fis.buildingblock.core.domain.CompositeDomainObject");
 		return cm;
 	}
-	
+
+	private static String paths(String first, String... more) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(first);
+		for (String next : more) {
+			sb.append(File.separator).append(next);
+		}
+		return sb.toString();
+	}
+
 	/**
 	 * Remove a CLI option from the list of available options
 	 * 
