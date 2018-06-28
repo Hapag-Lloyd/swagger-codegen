@@ -40,7 +40,6 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		library = "JavaFis3";
 
 		// remove some CLI options
-		removeCliOption(cliOptions, "title");
 		removeCliOption(cliOptions, "java8");
 		removeCliOption(cliOptions, "dateLibrary");
 		removeCliOption(cliOptions, USE_BEANVALIDATION);
@@ -70,8 +69,8 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		// artifactId = artifactId; // CLI: artifactId
 		apiPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx"; // CLI: apiPackage
 		modelPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx.model"; // CLI: modelPackage
-		testPackage = "com.hlag.fis." + project + ".core.example.test";
-		title = "Generated Server"; // CLI: title (oben aber entfernt)
+		testPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx.test"; // CLI: testPackage
+		title = "Generated Server"; // CLI: title 
 
 		// fixed properties for code generation
 		sourceFolder = paths("src", "gen", "java");
