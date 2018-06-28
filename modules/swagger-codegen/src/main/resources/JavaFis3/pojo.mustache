@@ -17,12 +17,7 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
       {{/isContainer}}
       {{/items}}
     {{/items.isEnum}}
-  {{#jackson}}
-  @JsonProperty("{{baseName}}")
-  {{/jackson}}
-  {{#gson}}
-  @SerializedName("{{baseName}}")
-  {{/gson}}
+  @XmlElement(name="{{baseName}}")
   {{#isContainer}}
   private {{{datatypeWithEnum}}} {{name}}{{#required}} = {{{defaultValue}}}{{/required}}{{^required}} = null{{/required}};
   {{/isContainer}}
@@ -78,12 +73,6 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
   {{/maximum}}
    * @return {{name}}
    **/
- {{#vendorExtensions.extraAnnotation}}
-  {{{vendorExtensions.extraAnnotation}}}
-  {{/vendorExtensions.extraAnnotation}}
-  {{#jackson}}
-  @JsonProperty("{{baseName}}")
-  {{/jackson}}
   @ApiModelProperty({{#example}}example = "{{{example}}}", {{/example}}{{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
 {{#useBeanValidation}}{{>beanValidation}}{{/useBeanValidation}}  public {{{datatypeWithEnum}}} {{#isBoolean}}is{{/isBoolean}}{{getter}}() {
     return {{name}};
@@ -97,7 +86,6 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
 
   {{/vars}}
 
-{{^supportJava6}}
   @Override
   public boolean equals(java.lang.Object o) {
     if (this == o) {
@@ -117,8 +105,6 @@ public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
   public int hashCode() {
     return Objects.hash({{#vars}}{{name}}{{#hasMore}}, {{/hasMore}}{{/vars}}{{#parent}}{{#hasVars}}, {{/hasVars}}super.hashCode(){{/parent}});
   }
-
-{{/supportJava6}}
 
   @Override
   public String toString() {
