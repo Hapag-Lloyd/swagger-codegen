@@ -2,18 +2,22 @@
 
 package {{package}};
 
+import static com.hlag.fis.buildingblock.annotation.CodeValidationType.BUILDING_BLOCK_USAGE;
+
 import java.util.Objects;
 {{#imports}}import {{import}};
 {{/imports}}
-{{#serializableModel}}
-import java.io.Serializable;
-{{/serializableModel}}
 import javax.validation.constraints.*;
-import com.hlag.fis.buildingblock.annotation.CodeValidationType;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.hlag.fis.buildingblock.annotation.SuppressCodeValidations;
+
+import io.swagger.annotations.ApiModel;
 
 {{#models}}
 {{#model}}
-@SuppressCodeValidations(CodeValidationType.BUILDING_BLOCK_USAGE)
 {{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{>pojo}}{{/isEnum}}
 {{/model}}
 {{/models}}
