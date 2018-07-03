@@ -47,6 +47,7 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		// no documentation for FIS3
 		modelDocTemplateFiles.remove("model_doc.mustache");
 		apiDocTemplateFiles.remove("api_doc.mustache");
+		apiTestTemplateFiles.remove("api_test.mustache");
 
 		// Default generation will create interface
 		// we will provide optional default implementation which will not be created if the corresponding file already exists.
@@ -69,8 +70,8 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 		// artifactId = artifactId; // CLI: artifactId
 		apiPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx"; // CLI: apiPackage
 		modelPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx.model"; // CLI: modelPackage
-		testPackage = "com.hlag.fis." + project + ".core.adapter.ws.xxx.test"; // CLI: testPackage
-		title = "Generated Server"; // CLI: title 
+		testPackage = apiPackage;
+		//title = "Generated Server"; // CLI: title 
 
 		// fixed properties for code generation
 		sourceFolder = paths("src", "gen", "java");
@@ -167,8 +168,8 @@ public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
 	@Override
 	public CodegenModel fromModel(String name, Model model, Map<String, Model> allDefinitions) {
 		CodegenModel cm = super.fromModel(name, model, allDefinitions);
-		cm.parent = "CompositeDomainObject";
-		cm.imports.add("com.hlag.fis.buildingblock.core.domain.CompositeDomainObject");
+//		cm.parent = "CompositeDomainObject";
+//		cm.imports.add("com.hlag.fis.buildingblock.core.domain.CompositeDomainObject");
 		return cm;
 	}
 
