@@ -516,7 +516,61 @@ public class CodeGenMojo extends AbstractMojo {
 
 		for (File swaggerFile : findSwaggerFiles(input)) {
 			configurator.setInputSpec(swaggerFile.getAbsolutePath());
+			configureFis3ProjectSettings(swaggerFile, configurator);
 			handle(configurator);
+		}
+	}
+
+	private void configureFis3ProjectSettings(File swaggerFile, CodegenConfigurator config) {
+		MavenProject project = (MavenProject) getPluginContext().get("project");
+
+		String fis3ProjectName = project.getArtifactId();
+		if (fis3ProjectName.toLowerCase().startsWith("fis3"))
+			fis3ProjectName = fis3ProjectName.substring("fis3".length());
+		if (fis3ProjectName.toLowerCase().endsWith("-Impl".toLowerCase()))
+			fis3ProjectName = fis3ProjectName.substring(0, fis3ProjectName.length() - "-Impl".length());
+		if (fis3ProjectName.toLowerCase().endsWith("-Api".toLowerCase()))
+			fis3ProjectName = fis3ProjectName.substring(0, fis3ProjectName.length() - "-Api".length());
+		fis3ProjectName = toPackageName(fis3ProjectName);
+
+		String serviceName = swaggerFile.getName();
+		if (serviceName.contains("."))
+			serviceName = serviceName.substring(0, serviceName.lastIndexOf("."));
+		serviceName = toPackageName(serviceName);
+
+		config.setApiPackage("com.hlag.fis." + fis3ProjectName + ".core.adapter.ws." + serviceName);
+		config.setModelPackage(config.getApiPackage() + ".model");
+		// TODO testPackage = "com.hlag.fis." + fis3ProjectName + ".core.adapter.ws." + serviceName;
+	}
+
+	private static String toPackageName(String string) {
+		char[] cs = string.toCharArray();
+		StringBuilder sb = new StringBuilder();
+
+		boolean nextUpper = false;
+		for (char c : cs) {
+			if (sb.length() == 0) {
+				if (!(Character.isJavaIdentifierStart(c))) {
+					continue;
+				} else {
+					c = Character.toLowerCase(c);
+				}
+			} else {
+				if (!Character.isJavaIdentifierPart(c)) {
+					nextUpper = true;
+					continue;
+				}
+				if (nextUpper) {
+					nextUpper = false;
+					c = Character.toUpperCase(c);
+				}
+			}
+			sb.append(c);
+		}
+		if (sb.length() > 0) {
+			return sb.toString();
+		} else {
+			return "dummy";
 		}
 	}
 
