@@ -675,6 +675,7 @@ public class CodeGenMojo extends AbstractMojo {
 			for (File sub : file.listFiles()) {
 				clearFileSystem(sub);
 			}
+			file.delete();
 		}
 	}
 

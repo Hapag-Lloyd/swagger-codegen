@@ -5,7 +5,8 @@
 @SuppressCodeValidations(BUILDING_BLOCK_USAGE)
 @XmlRootElement
 @ApiModel(value = "{{name}}"{{#description}}, description = "{{{description}}}"{{/description}})
-public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
+@SuppressWarnings("all")
+public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} implements CompositeDomainObject {
   {{#vars}}
     {{#isEnum}}
     {{^isContainer}}

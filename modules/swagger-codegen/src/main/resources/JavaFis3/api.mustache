@@ -33,6 +33,7 @@ import javax.validation.constraints.*;
 @Produces({ {{#produces}}"{{{mediaType}}}"{{#hasMore}}, {{/hasMore}}{{/produces}} }){{/hasProduces}}
 @Api(description = "the {{{baseName}}} API")
 {{>generatedAnnotation}}
+@SuppressWarnings("all")
 {{#operations}}
 /** This class is generated for FIS3 to reflect the Swagger defined interface for {{name}}. */
 public interface {{classname}} extends ApplicationServiceEndpoint {
