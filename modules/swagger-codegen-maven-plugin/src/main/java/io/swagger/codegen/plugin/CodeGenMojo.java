@@ -514,11 +514,18 @@ public class CodeGenMojo extends AbstractMojo {
 			}
 		}
 
+		// remove all previously generated files
+		clearOutputFolder(configurator.getOutputDir());
+
+		// generate all artifacts
 		for (File swaggerFile : findSwaggerFiles(input)) {
 			configurator.setInputSpec(swaggerFile.getAbsolutePath());
 			configureFis3ProjectSettings(swaggerFile, configurator);
 			handle(configurator);
 		}
+
+		// Do some FIS3 clean up
+		cleanSwaggerOutput(configurator.getOutputDir());
 	}
 
 	private void configureFis3ProjectSettings(File swaggerFile, CodegenConfigurator config) {
@@ -655,5 +662,25 @@ public class CodeGenMojo extends AbstractMojo {
 				System.setProperty(entry.getKey(), entry.getValue());
 			}
 		}
+	}
+
+	private void clearOutputFolder(String outputPath) {
+		clearFileSystem(new File(outputPath));
+	}
+
+	private static void clearFileSystem(File file) {
+		if (file.isFile()) {
+			file.delete();
+		} else if (file.isDirectory()) {
+			for (File sub : file.listFiles()) {
+				clearFileSystem(sub);
+			}
+		}
+	}
+
+	private void cleanSwaggerOutput(String outputPath) {
+		final File outputFolder = new File(outputPath);
+		final File swaggerCodegenIgnoreFile = new File(outputFolder, ".swagger-codegen-ignore");
+		swaggerCodegenIgnoreFile.delete();
 	}
 }
