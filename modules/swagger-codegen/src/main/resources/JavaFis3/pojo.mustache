@@ -1,11 +1,10 @@
 /**
  * {{#description}}{{.}}{{/description}}{{^description}}{{classname}}{{/description}}
- */{{#description}}
-@ApiModel(description = "{{{description}}}"){{/description}}
+ */
 {{>generatedAnnotation}}
 @SuppressCodeValidations(BUILDING_BLOCK_USAGE)
 @XmlRootElement
-@ApiModel(value = "{{name}}")
+@ApiModel(value = "{{name}}"{{#description}}, description = "{{{description}}}"{{/description}})
 public class {{classname}} {{#parent}}extends {{{parent}}}{{/parent}} {
   {{#vars}}
     {{#isEnum}}

@@ -7,14 +7,13 @@ import static com.hlag.fis.buildingblock.annotation.CodeValidationType.BUILDING_
 import java.util.Objects;
 {{#imports}}import {{import}};
 {{/imports}}
+import com.hlag.fis.buildingblock.core.domain.CompositeDomainObject;
 import javax.validation.constraints.*;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.hlag.fis.buildingblock.annotation.SuppressCodeValidations;
-
-import io.swagger.annotations.ApiModel;
 
 {{#models}}
 {{#model}}
