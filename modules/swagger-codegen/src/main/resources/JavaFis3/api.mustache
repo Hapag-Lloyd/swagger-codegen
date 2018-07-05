@@ -47,6 +47,7 @@ public interface {{classname}} extends ApplicationServiceEndpoint {
     @ApiResponses(value = { 
             {{#responses}}@ApiResponse(code = {{{code}}}, message = "{{{message}}}", response = {{{baseType}}}.class{{#containerType}}, responseContainer = "{{{containerType}}}"{{/containerType}}){{#hasMore}},
             {{/hasMore}}{{/responses}} })
+    @NotNull
     Response {{nickname}}({{!#isMultipart} }        MultipartFormDataInput input, {{/isMultipart}}{{#allParams}}
             {{>params_query}}{{>params_path}}{{>params_header}}{{>params_body}}{{!^isMultipart}}{{>params_form}}{{#hasMore}}, //{{/hasMore}}{{!/isMultipart} }{{#isMultipart} }{{^isFormParam} }{{#hasMore} }, {{/hasMore} }{{/isFormParam} }{{/isMultipart}}{{/allParams}}
             {{!@Context SecurityContext securityContext}}
