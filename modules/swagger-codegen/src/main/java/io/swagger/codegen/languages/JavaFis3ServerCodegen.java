@@ -16,7 +16,7 @@ import io.swagger.models.Model;
 import io.swagger.models.Operation;
 
 public class JavaFis3ServerCodegen extends AbstractJavaJAXRSServerCodegen {
-	private static final String APPLICATION_SERVICE_ENDPOINT = "AppSvcEndpoint";
+	private static final String APPLICATION_SERVICE_ENDPOINT = "Endpoint";
 
 	@Override
 	public CodegenType getTag() {
