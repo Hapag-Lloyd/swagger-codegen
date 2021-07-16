@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from petstore_api.models.outer_enum import OuterEnum  # noqa: F401,E501
+from petstore_api.configuration import Configuration
 
 
 class EnumTest(object):
@@ -34,6 +34,7 @@ class EnumTest(object):
     """
     swagger_types = {
         'enum_string': 'str',
+        'enum_string_required': 'str',
         'enum_integer': 'int',
         'enum_number': 'float',
         'outer_enum': 'OuterEnum'
@@ -41,15 +42,20 @@ class EnumTest(object):
 
     attribute_map = {
         'enum_string': 'enum_string',
+        'enum_string_required': 'enum_string_required',
         'enum_integer': 'enum_integer',
         'enum_number': 'enum_number',
         'outer_enum': 'outerEnum'
     }
 
-    def __init__(self, enum_string=None, enum_integer=None, enum_number=None, outer_enum=None):  # noqa: E501
+    def __init__(self, enum_string=None, enum_string_required=None, enum_integer=None, enum_number=None, outer_enum=None, _configuration=None):  # noqa: E501
         """EnumTest - a model defined in Swagger"""  # noqa: E501
+        if _configuration is None:
+            _configuration = Configuration()
+        self._configuration = _configuration
 
         self._enum_string = None
+        self._enum_string_required = None
         self._enum_integer = None
         self._enum_number = None
         self._outer_enum = None
@@ -57,6 +63,7 @@ class EnumTest(object):
 
         if enum_string is not None:
             self.enum_string = enum_string
+        self.enum_string_required = enum_string_required
         if enum_integer is not None:
             self.enum_integer = enum_integer
         if enum_number is not None:
@@ -83,13 +90,44 @@ class EnumTest(object):
         :type: str
         """
         allowed_values = ["UPPER", "lower", ""]  # noqa: E501
-        if enum_string not in allowed_values:
+        if (self._configuration.client_side_validation and
+                enum_string not in allowed_values):
             raise ValueError(
                 "Invalid value for `enum_string` ({0}), must be one of {1}"  # noqa: E501
                 .format(enum_string, allowed_values)
             )
 
         self._enum_string = enum_string
+
+    @property
+    def enum_string_required(self):
+        """Gets the enum_string_required of this EnumTest.  # noqa: E501
+
+
+        :return: The enum_string_required of this EnumTest.  # noqa: E501
+        :rtype: str
+        """
+        return self._enum_string_required
+
+    @enum_string_required.setter
+    def enum_string_required(self, enum_string_required):
+        """Sets the enum_string_required of this EnumTest.
+
+
+        :param enum_string_required: The enum_string_required of this EnumTest.  # noqa: E501
+        :type: str
+        """
+        if self._configuration.client_side_validation and enum_string_required is None:
+            raise ValueError("Invalid value for `enum_string_required`, must not be `None`")  # noqa: E501
+        allowed_values = ["UPPER", "lower", ""]  # noqa: E501
+        if (self._configuration.client_side_validation and
+                enum_string_required not in allowed_values):
+            raise ValueError(
+                "Invalid value for `enum_string_required` ({0}), must be one of {1}"  # noqa: E501
+                .format(enum_string_required, allowed_values)
+            )
+
+        self._enum_string_required = enum_string_required
 
     @property
     def enum_integer(self):
@@ -110,7 +148,8 @@ class EnumTest(object):
         :type: int
         """
         allowed_values = [1, -1]  # noqa: E501
-        if enum_integer not in allowed_values:
+        if (self._configuration.client_side_validation and
+                enum_integer not in allowed_values):
             raise ValueError(
                 "Invalid value for `enum_integer` ({0}), must be one of {1}"  # noqa: E501
                 .format(enum_integer, allowed_values)
@@ -137,7 +176,8 @@ class EnumTest(object):
         :type: float
         """
         allowed_values = [1.1, -1.2]  # noqa: E501
-        if enum_number not in allowed_values:
+        if (self._configuration.client_side_validation and
+                enum_number not in allowed_values):
             raise ValueError(
                 "Invalid value for `enum_number` ({0}), must be one of {1}"  # noqa: E501
                 .format(enum_number, allowed_values)
@@ -187,6 +227,9 @@ class EnumTest(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(EnumTest, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 
@@ -203,8 +246,11 @@ class EnumTest(object):
         if not isinstance(other, EnumTest):
             return False
 
-        return self.__dict__ == other.__dict__
+        return self.to_dict() == other.to_dict()
 
     def __ne__(self, other):
         """Returns true if both objects are not equal"""
-        return not self == other
+        if not isinstance(other, EnumTest):
+            return True
+
+        return self.to_dict() != other.to_dict()

@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from petstore_api.models.animal import Animal  # noqa: F401,E501
+from petstore_api.configuration import Configuration
 
 
 class Dog(object):
@@ -40,8 +40,11 @@ class Dog(object):
         'breed': 'breed'
     }
 
-    def __init__(self, breed=None):  # noqa: E501
+    def __init__(self, breed=None, _configuration=None):  # noqa: E501
         """Dog - a model defined in Swagger"""  # noqa: E501
+        if _configuration is None:
+            _configuration = Configuration()
+        self._configuration = _configuration
 
         self._breed = None
         self.discriminator = None
@@ -91,6 +94,9 @@ class Dog(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(Dog, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 
@@ -107,8 +113,11 @@ class Dog(object):
         if not isinstance(other, Dog):
             return False
 
-        return self.__dict__ == other.__dict__
+        return self.to_dict() == other.to_dict()
 
     def __ne__(self, other):
         """Returns true if both objects are not equal"""
-        return not self == other
+        if not isinstance(other, Dog):
+            return True
+
+        return self.to_dict() != other.to_dict()

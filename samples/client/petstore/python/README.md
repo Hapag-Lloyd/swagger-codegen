@@ -50,8 +50,9 @@ import time
 import petstore_api
 from petstore_api.rest import ApiException
 from pprint import pprint
+
 # create an instance of the API class
-api_instance = petstore_api.AnotherFakeApi()
+api_instance = petstore_api.AnotherFakeApi(petstore_api.ApiClient(configuration))
 body = petstore_api.Client() # Client | client model
 
 try:
@@ -74,6 +75,7 @@ Class | Method | HTTP request | Description
 *FakeApi* | [**fake_outer_composite_serialize**](docs/FakeApi.md#fake_outer_composite_serialize) | **POST** /fake/outer/composite | 
 *FakeApi* | [**fake_outer_number_serialize**](docs/FakeApi.md#fake_outer_number_serialize) | **POST** /fake/outer/number | 
 *FakeApi* | [**fake_outer_string_serialize**](docs/FakeApi.md#fake_outer_string_serialize) | **POST** /fake/outer/string | 
+*FakeApi* | [**test_body_with_query_params**](docs/FakeApi.md#test_body_with_query_params) | **PUT** /fake/body-with-query-params | 
 *FakeApi* | [**test_client_model**](docs/FakeApi.md#test_client_model) | **PATCH** /fake | To test \&quot;client\&quot; model
 *FakeApi* | [**test_endpoint_parameters**](docs/FakeApi.md#test_endpoint_parameters) | **POST** /fake | Fake endpoint for testing various parameters 假端點 偽のエンドポイント 가짜 엔드 포인트 
 *FakeApi* | [**test_enum_parameters**](docs/FakeApi.md#test_enum_parameters) | **GET** /fake | To test enum parameters
@@ -111,15 +113,19 @@ Class | Method | HTTP request | Description
  - [ArrayOfArrayOfNumberOnly](docs/ArrayOfArrayOfNumberOnly.md)
  - [ArrayOfNumberOnly](docs/ArrayOfNumberOnly.md)
  - [ArrayTest](docs/ArrayTest.md)
+ - [Boolean](docs/Boolean.md)
  - [Capitalization](docs/Capitalization.md)
+ - [Cat](docs/Cat.md)
  - [Category](docs/Category.md)
  - [ClassModel](docs/ClassModel.md)
  - [Client](docs/Client.md)
+ - [Dog](docs/Dog.md)
  - [EnumArrays](docs/EnumArrays.md)
  - [EnumClass](docs/EnumClass.md)
  - [EnumTest](docs/EnumTest.md)
  - [FormatTest](docs/FormatTest.md)
  - [HasOnlyReadOnly](docs/HasOnlyReadOnly.md)
+ - [Ints](docs/Ints.md)
  - [List](docs/List.md)
  - [MapTest](docs/MapTest.md)
  - [MixedPropertiesAndAdditionalPropertiesClass](docs/MixedPropertiesAndAdditionalPropertiesClass.md)
@@ -127,6 +133,7 @@ Class | Method | HTTP request | Description
  - [ModelReturn](docs/ModelReturn.md)
  - [Name](docs/Name.md)
  - [NumberOnly](docs/NumberOnly.md)
+ - [Numbers](docs/Numbers.md)
  - [Order](docs/Order.md)
  - [OuterBoolean](docs/OuterBoolean.md)
  - [OuterComposite](docs/OuterComposite.md)
@@ -138,8 +145,6 @@ Class | Method | HTTP request | Description
  - [SpecialModelName](docs/SpecialModelName.md)
  - [Tag](docs/Tag.md)
  - [User](docs/User.md)
- - [Cat](docs/Cat.md)
- - [Dog](docs/Dog.md)
 
 
 ## Documentation For Authorization
